@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>방글이를 지켜라</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #D6DCE5;
+      text-align: center;
+      overflow-x: hidden; 
+    }
+
+    #gameCanvas {
+      width: 93%;
+      height: auto;
+      max-width: 850px;
+      display: block;
+      margin: 0.5vh auto 2vh auto;
+      padding: 5px;
+      touch-action: manipulation;
+    }
+
+    #startScreen {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(255, 255, 255, 0.95);
+      padding: 5vw 6vw;
+      border: 2px solid black;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+      font-size: 1rem;
+      width: 90%;
+      max-width: 350px;
+      border-radius: 12px;
+      z-index: 2;
+      box-sizing: border-box;
+    }
+
+    #startScreen input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    #startScreen button {
+      padding: 12px 24px;
+      font-size: 16px;
+      cursor: pointer;
+      background-color: #00003E;
+      color: white;
+      border: none;
+      border-radius: 8px;
+    }
+
+    @media (max-width: 400px) {
+      #startScreen {
+        width: 90%;
+        font-size: 13px;
+      }
+    }
+  </style>
+  </head>
+<body>
+  <div id="startScreen">
+    <h2>게임 시작 전 정보를 입력해주세요</h2>
+    <input id="departmentInput" placeholder="부서 (예: 감염관리실)" /><br><br>
+    <input id="nameInput" placeholder="이름 (예: 최아름)" /><br><br>
+    <button id="startBtn">확 인</button>
+  </div>
+<canvas id="gameCanvas" width="850" height="1500" style="display:none;"></canvas>
+
+  <!-- JS 연결: Firebase 로직은 JS 파일 안으로 이동 -->
+  <script src="bang_game.js" type="module" defer></script>
+
+</body>
+</html>
