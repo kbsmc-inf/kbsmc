@@ -1,6 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
-import { getFirestore, collection, query, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+import { getFirestore, collection, addDoc, query, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
+// Firebase 초기화
 const firebaseConfig = {
   apiKey: "AIzaSyDhg71bf9JeHNO6xvjP0OjLRTi-wLpIB6s",
   authDomain: "kbsmcinfection-90d6f.firebaseapp.com",
@@ -508,6 +509,7 @@ document.addEventListener("DOMContentLoaded", () => {
     requestAnimationFrame(gameLoop);
   });
 });
+
 
 
 
