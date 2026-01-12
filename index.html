@@ -70,8 +70,14 @@
 <body>
   <div id="startScreen">
     <h2>게임 시작 전 정보를 입력해주세요. <br><br>[학회용] <br></b>닉네임으로 적어주셔도 됩니다.</h2>
-    <input id="departmentInput" placeholder="부서 (예: 감염관리실)" /><br><br>
-    <input id="nameInput" placeholder="이름 (예: 최아름)" /><br><br>
+    <!-- 부서 입력 -->
+<input id="departmentInput" list="deptOptions" placeholder="부서 (예: 감염관리실)" />
+<datalist id="deptOptions"></datalist>
+
+<!-- 이름 입력 -->
+<input id="nameInput" list="nameOptions" placeholder="이름 (예: 최아름)" />
+<datalist id="nameOptions"></datalist>
+    
     <button id="startBtn">확 인</button>
   </div>
 <canvas id="gameCanvas" width="850" height="1500" style="display:none;"></canvas>
@@ -81,6 +87,7 @@
 
 </body>
 </html>
+
 
 
 
