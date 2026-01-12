@@ -487,28 +487,39 @@ function startGame() {
   requestAnimationFrame(gameLoop);
 }
 
-// bang_game.js 마지막 부분
+// bang_game.js 마지막 부분 
 document.addEventListener("DOMContentLoaded", () => {
   const startBtn = document.getElementById("startBtn");
+  const dIn = document.getElementById("departmentInput");
+  const nIn = document.getElementById("nameInput");
+
+  // [추가] 페이지 열자마자 기존 기록을 리스트에 넣기
+  const dList = document.getElementById("deptOptions");
+  const nList = document.getElementById("nameOptions");
+  if(localStorage.getItem("lastD")) dList.innerHTML = `<option value="${localStorage.getItem("lastD")}">`;
+  if(localStorage.getItem("lastN")) nList.innerHTML = `<option value="${localStorage.getItem("lastN")}">`;
+
   startBtn.addEventListener("click", () => {
-    const department = document.getElementById("departmentInput").value.trim();
-    const name = document.getElementById("nameInput").value.trim();
+    const department = dIn.value.trim();
+    const name = nIn.value.trim();
 
     if (!department || !name) {
       alert("이름과 부서를 입력해주세요!");
       return;
     }
 
-    window.playerInfo = { department, playerName: name };
+    // [추가] 브라우저에 입력값 저장
+    localStorage.setItem("lastD", department);
+    localStorage.setItem("lastN", name);
 
+    window.playerInfo = { department, playerName: name };
     document.getElementById("startScreen").style.display = "none";
     document.getElementById("gameCanvas").style.display = "block";
-
     gameStarted = false;
-
     requestAnimationFrame(gameLoop);
   });
 });
+
 
 
 
