@@ -350,8 +350,6 @@ function gameLoop() {
 
   if (stageUpTimer > 0) {
     let messageLines = ["Level UP!", "환자가 빨리 다가옵니다!"];
-    if (stage === 7) {
-      messageLines = [`스테이지 ${stage} 도달!`, "환자가 두명씩 등장!"];
     } 
 
     //게임 배경 그대로
@@ -380,7 +378,7 @@ function gameLoop() {
 
     if (stageUpTimer === 0 && !stageUpHandled) {
       patients = [];
-      const maxPatients = stage < 7 ? 1 : 2;
+      const maxPatients = stage < 7 ? 1 : 1;
       const fixedGap = 500;
 
       for (let i = 0; i < maxPatients; i++) {
@@ -397,7 +395,7 @@ function gameLoop() {
 
 
   // 환자 처리
-  const maxPatients = stage<7?1:2;
+  const maxPatients = stage<7?1:1;
   while (patients.length<maxPatients) patients.push(createPatient(400));
 
   for (let i=patients.length-1;i>=0;i--) {
@@ -416,7 +414,7 @@ function gameLoop() {
 
     if (pt.y+pt.height >= bang.y) {
       const correct = protectionMap[currentProtection]?.includes(pt.disease);
-      if (correct) { score+=10; passedPatients++; patients.splice(i,1); showHeart=true; heartTimer=15; }
+      if (correct) { score+=1; passedPatients++; patients.splice(i,1); showHeart=true; heartTimer=15; }
       else { gameOver=true; patients.splice(i,1); }
     }
   }
@@ -425,7 +423,7 @@ function gameLoop() {
   if (passedPatients >= 10 && stage < 50) {
   stage++;
   passedPatients = 0;
-  speed += 0.7; 
+  speed += 1; 
   stageUpTimer = 50;
   stageUpHandled = false;
 }
@@ -519,6 +517,7 @@ document.addEventListener("DOMContentLoaded", () => {
     requestAnimationFrame(gameLoop);
   });
 });
+
 
 
 
