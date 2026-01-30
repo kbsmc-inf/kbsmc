@@ -158,7 +158,7 @@ let bang = { x: WIDTH / 2 - 100, y: HEIGHT - 415, width: 200, height: 170 };
 let patients = [];
 let score = 0;
 let stage = 1;
-let speed = 4;
+let speed = 5;
 let currentProtection = null;
 let gameStarted = false;
 let gameOver = false;
@@ -288,7 +288,7 @@ function resetGame() {
   score = 0;
   stage = 1;
   passedPatients = 0;
-  speed = 4;
+  speed = 5;
   patients = [createPatient()];
 }
 
@@ -509,6 +509,7 @@ document.addEventListener("DOMContentLoaded", () => {
     requestAnimationFrame(gameLoop);
   });
 });
+
 
 
 
