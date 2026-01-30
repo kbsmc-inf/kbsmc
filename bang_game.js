@@ -325,51 +325,42 @@ function gameLoop() {
       const { playerName, department } = window.playerInfo;
       saveScoreToFirebase(playerName, department, score);
     }
-
-    // 게임 오버 시 Firestore 읽기는 버튼 이벤트에서 처리
     return;
   }
 
-    // 배경 및 방글이
-  ctx.drawImage(images.background,0,0,WIDTH,HEIGHT);
+  // 배경 및 방글이
+  ctx.drawImage(images.background, 0, 0, WIDTH, HEIGHT);
   ctx.drawImage(bangImg, bang.x, bang.y, bang.width, bang.height);
 
   if (showHeart) {
-  ctx.save();
-  ctx.globalAlpha = 0.85; // 살짝 투명하게
-  ctx.font = "bold 50px Galmuri11";
-  ctx.fillStyle = "red";
-  ctx.fillText("♥", bang.x + 10, bang.y + 5);
-  ctx.restore();
-  heartTimer--;
-  if (heartTimer <= 0) showHeart = false;
-}
+    ctx.save();
+    ctx.globalAlpha = 0.85;
+    ctx.font = "bold 50px Galmuri11";
+    ctx.fillStyle = "red";
+    ctx.fillText("♥", bang.x + 10, bang.y + 5);
+    ctx.restore();
+    heartTimer--;
+    if (heartTimer <= 0) showHeart = false;
+  }
 
-  drawTextWithBackground(`스테이지: ${stage}`,10,10,"bold 35px Galmuri11","white","#404040");
-  drawTextWithBackground(`점수: ${score}`,10,70,"bold 35px Galmuri11","yellow","#404040");
+  drawTextWithBackground(`스테이지: ${stage}`, 10, 10, "bold 35px Galmuri11", "white", "#404040");
+  drawTextWithBackground(`점수: ${score}`, 10, 70, "bold 35px Galmuri11", "yellow", "#404040");
 
+  // --- 스테이지 업 연출 모드 ---
   if (stageUpTimer > 0) {
-    let messageLines = ["Level UP!", "환자가 빨리 다가옵니다!"];
-    } 
-
-    //게임 배경 그대로
-    ctx.drawImage(images.background, 0, 0, WIDTH, HEIGHT);  
-
+    const messageLines = ["Level UP!", "환자가 빨리 다가옵니다!"];
+    
     ctx.font = "bold 40px Galmuri11";
     ctx.textBaseline = "top";
-
     const centerY = HEIGHT / 2 - 100;
     const padding = 10;
 
     messageLines.forEach((line, i) => {
       const textWidth = ctx.measureText(line).width;
-      const textHeight = 40; // 폰트 크기 기준
       const x = WIDTH / 2 - textWidth / 2;
       const y = centerY + i * 60;
-
       ctx.fillStyle = "black";
-      ctx.fillRect(x - padding, y - padding, textWidth + padding * 2, textHeight + padding * 2);
-
+      ctx.fillRect(x - padding, y - padding, textWidth + padding * 2, 50);
       ctx.fillStyle = i === 0 ? "yellow" : "white";
       ctx.fillText(line, x, y);
     });
@@ -378,55 +369,56 @@ function gameLoop() {
 
     if (stageUpTimer === 0 && !stageUpHandled) {
       patients = [];
-      const maxPatients = stage < 7 ? 1 : 1;
-      const fixedGap = 500;
-
-      for (let i = 0; i < maxPatients; i++) {
-        const offset = i * fixedGap;
-        patients.push(createPatient(offset));
+      const maxP = 1; 
+      for (let i = 0; i < maxP; i++) {
+        patients.push(createPatient(i * 500));
       }
       stageUpHandled = true;
     }
 
     requestAnimationFrame(gameLoop);
-    return;
+    return; // 연출 중에는 아래 환자 로직 실행 안 함
   }
 
+  // --- 일반 게임 모드 (환자 처리) ---
+  const maxPatients = 1; 
+  while (patients.length < maxPatients) patients.push(createPatient(400));
 
-
-  // 환자 처리
-  const maxPatients = stage<7?1:1;
-  while (patients.length<maxPatients) patients.push(createPatient(400));
-
-  for (let i=patients.length-1;i>=0;i--) {
+  for (let i = patients.length - 1; i >= 0; i--) {
     const pt = patients[i];
     pt.y += speed;
     ctx.drawImage(pt.image, pt.x, pt.y, pt.width, pt.height);
 
-    // 질병 이름
     const text = pt.disease || "???";
     ctx.font = "bold 33px Galmuri11";
     const textWidth = ctx.measureText(text).width;
-    ctx.fillStyle="rgba(255, 255, 255, 0.51)";
-    ctx.fillRect(pt.x+pt.width/2 - textWidth/2 -6, pt.y-36, textWidth+12,40);
-    ctx.fillStyle="black";
-    ctx.fillText(text, pt.x+pt.width/2 - textWidth/2, pt.y-30);
+    ctx.fillStyle = "rgba(255, 255, 255, 0.51)";
+    ctx.fillRect(pt.x + pt.width / 2 - textWidth / 2 - 6, pt.y - 36, textWidth + 12, 40);
+    ctx.fillStyle = "black";
+    ctx.fillText(text, pt.x + pt.width / 2 - textWidth / 2, pt.y - 30);
 
-    if (pt.y+pt.height >= bang.y) {
+    if (pt.y + pt.height >= bang.y) {
       const correct = protectionMap[currentProtection]?.includes(pt.disease);
-      if (correct) { score+=1; passedPatients++; patients.splice(i,1); showHeart=true; heartTimer=15; }
-      else { gameOver=true; patients.splice(i,1); }
+      if (correct) {
+        score += 1;
+        passedPatients++;
+        patients.splice(i, 1);
+        showHeart = true;
+        heartTimer = 15;
+      } else {
+        gameOver = true;
+        patients.splice(i, 1);
+      }
     }
   }
 
-  // 스테이지 업
   if (passedPatients >= 10 && stage < 50) {
-  stage++;
-  passedPatients = 0;
-  speed += 1; 
-  stageUpTimer = 50;
-  stageUpHandled = false;
-}
+    stage++;
+    passedPatients = 0;
+    speed += 1;
+    stageUpTimer = 50;
+    stageUpHandled = false;
+  }
 
   animationId = requestAnimationFrame(gameLoop);
 }
@@ -517,6 +509,7 @@ document.addEventListener("DOMContentLoaded", () => {
     requestAnimationFrame(gameLoop);
   });
 });
+
 
 
 
