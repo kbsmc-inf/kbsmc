@@ -158,7 +158,7 @@ let bang = { x: WIDTH / 2 - 100, y: HEIGHT - 415, width: 200, height: 170 };
 let patients = [];
 let score = 0;
 let stage = 1;
-let speed = 5;
+let speed = 2;
 let currentProtection = null;
 let gameStarted = false;
 let gameOver = false;
@@ -509,6 +509,7 @@ document.addEventListener("DOMContentLoaded", () => {
     requestAnimationFrame(gameLoop);
   });
 });
+
 
 
 
