@@ -158,7 +158,7 @@ let bang = { x: WIDTH / 2 - 100, y: HEIGHT - 415, width: 200, height: 170 };
 let patients = [];
 let score = 0;
 let stage = 1;
-let speed = 2;
+let speed = 0.5;
 let currentProtection = null;
 let gameStarted = false;
 let gameOver = false;
@@ -415,7 +415,7 @@ function gameLoop() {
   if (passedPatients >= 10 && stage < 50) {
     stage++;
     passedPatients = 0;
-    speed += 1;
+    speed += 0.7;
     stageUpTimer = 50;
     stageUpHandled = false;
   }
